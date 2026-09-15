@@ -1,0 +1,30 @@
+{
+  "name": "battery-flow-card",
+  "version": "1.0.0",
+  "description": "Darstellung einer Batterie in Home Assistant",
+  "main": "index.js",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "check": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bhomas86/battery-flow-card.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Bhomas86/battery-flow-card/issues"
+  },
+  "homepage": "https://github.com/Bhomas86/battery-flow-card#readme",
+  "dependencies": {
+    "lit": "^3.3.3"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.3.0"
+  }
+}
