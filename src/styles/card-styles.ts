@@ -8,11 +8,40 @@ export const cardStyles = css`
     display: block;
   }
 
+  .battery-card-header {
+    width: min(520px, calc(100% - 32px));
+    margin: 16px auto 0px;
+    color: var(--primary-text-color, #424242);
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .battery-summary {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 8px;
+    align-items: center;
+    width: min(520px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .battery-summary__visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  .battery-summary__details {
+    display: flex;
+    align-items: center;
+  }
+
   .battery-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 24px;
+    padding: 4px 0;
   }
 
   .battery {
@@ -38,12 +67,6 @@ export const cardStyles = css`
     fill: #4caf50;
   }
 
-  .battery-soc-value {
-    fill: var(--primary-text-color, #424242);
-    font-size: 28px;
-    font-weight: 700;
-  }
-  
   .battery--charging .battery-fill {
     fill: #4caf50;
   }
@@ -56,10 +79,32 @@ export const cardStyles = css`
     fill: #78909c;
   }
 
-  .battery-state-label {
-    fill: var(--secondary-text-color, #666666);
-    font-size: 14px;
-    font-weight: 500;
+  .battery-limit-line {
+    stroke-width: 2;
+    stroke-dasharray: 6 4;
+    opacity: 0.65;
+  }
+
+  .battery-limit--min .battery-limit-line {
+    stroke: #c20707;
+  }
+
+  .battery-limit--max .battery-limit-line {
+    stroke: #0f325e;
+  }
+
+  .battery-limit-label {
+    font-size: 10px;
+    font-weight: 600;
+    opacity: 0.7;
+  }
+
+  .battery-limit--min .battery-limit-label {
+    fill: #c20707;
+  }
+
+  .battery-limit--max .battery-limit-label {
+    fill: #0f325e;
   }
 
   .battery-flow-bar {
@@ -105,13 +150,9 @@ export const cardStyles = css`
   @keyframes battery-flow-down {
     from {
       transform: translateY(0);
-      opacity: 0;
-    }
-
-    15% {
       opacity: 1;
     }
-      
+
     85% {
       opacity: 1;
     }
@@ -121,18 +162,52 @@ export const cardStyles = css`
       opacity: 0;
     }
   }
-  
+
+  .battery-details {
+    width: 100%;
+  }
+
+  .battery-details__soc {
+    margin-bottom: 20px;
+    color: var(--primary-text-color, #424242);
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .battery-details__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .battery-details__label {
+    color: var(--secondary-text-color, #666666);
+    font-size: 20px;
+  }
+
+  .battery-details__value {
+    color: var(--primary-text-color, #424242);
+    font-size: 20px;
+    font-weight: 600;
+    text-align: right;
+  }
+
   .power-bar-wrapper {
-    width: min(360px, calc(100% - 48px));
-    margin: -8px auto 24px;
+    width: min(520px, calc(100% - 32px));
+    margin: -30px auto 24px;
+    padding-left: 20px;
+    padding-right: 2px;
+    box-sizing: border-box;
   }
 
   .power-bar-labels {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 6px;
-    font-size: 12px;
+    margin-bottom: 4px;
     color: var(--secondary-text-color, #666666);
+    font-size: 13px;
   }
 
   .power-bar {
@@ -172,7 +247,7 @@ export const cardStyles = css`
   }
 
   .development-controls {
-    width: min(420px, calc(100% - 32px));
+    width: min(520px, calc(100% - 32px));
     margin: 0 auto 24px;
     padding: 16px;
     border: 1px solid rgba(127, 127, 127, 0.25);
@@ -181,7 +256,7 @@ export const cardStyles = css`
 
   .development-controls label {
     display: grid;
-    grid-template-columns: 100px 1fr 80px;
+    grid-template-columns: 120px 1fr 80px;
     gap: 12px;
     align-items: center;
     min-height: 42px;

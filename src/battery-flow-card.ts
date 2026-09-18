@@ -7,6 +7,7 @@ import {
 import { renderBatteryDisplay } from "./components/battery-display";
 import { cardStyles } from "./styles/card-styles";
 import { renderPowerBar } from "./components/power-bar";
+import { renderBatteryDetails } from "./components/battery-details";
 
 /**
  * Main custom element for the Battery Flow Card.
@@ -29,6 +30,18 @@ export class BatteryFlowCard extends LitElement {
 
   @state()
   private maxDischargePower = 3000;
+
+  @state()
+  private capacityKwh = 7;
+
+  @state()
+  private minSoc = 10;
+
+  @state()
+  private maxSoc = 80;
+
+  @state()
+  private batteryName = "Battery Simulator";
 
   /**
    * Updates the SOC test value.
@@ -66,24 +79,36 @@ export class BatteryFlowCard extends LitElement {
    * Renders the complete development preview.
    */
   protected render() {
-    const minimumPower = -this.maxDischargePower;
-    const maximumPower = this.maxChargePower;
+
+    const batteryData = {
+      name: this.batteryName,
+      soc: this.soc,
+      power: this.power,
+      maxChargePower: this.maxChargePower,
+      maxDischargePower: this.maxDischargePower,
+      capacityKwh: this.capacityKwh,
+      minSoc: this.minSoc,
+      maxSoc: this.maxSoc
+    };
 
     return html`
       <div class="card">
-        ${renderBatteryDisplay({
-          soc: this.soc,
-          power: this.power,
-          maxChargePower: this.maxChargePower,
-          maxDischargePower: this.maxDischargePower
-        })}
+        <div class="battery-card-header">
+          ${batteryData.name}
+        </div>
 
-        ${renderPowerBar({
-          soc: this.soc,
-          power: this.power,
-          maxChargePower: this.maxChargePower,
-          maxDischargePower: this.maxDischargePower
-        })}
+        <div class="battery-summary">
+          <div class="battery-summary__visual">
+            ${renderBatteryDisplay(batteryData)}
+          </div>
+
+          <div class="battery-summary__details">
+            ${renderBatteryDetails(batteryData)}
+          </div>
+        </div>
+
+        ${renderPowerBar(batteryData)}
+
         <div class="development-controls">
           <label>
             <span>SOC</span>
@@ -105,8 +130,8 @@ export class BatteryFlowCard extends LitElement {
 
             <input
               type="range"
-              min="${minimumPower}"
-              max="${maximumPower}"
+              min="${-this.maxDischargePower}"
+              max="${this.maxChargePower}"
               step="50"
               .value="${String(this.power)}"
               @input="${this.handlePowerChange}"

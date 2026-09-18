@@ -59,6 +59,8 @@ export function renderBatteryDisplay(
   const power = data.power;
   const maxChargePower = data.maxChargePower;
   const maxDischargePower = data.maxDischargePower;
+  const minSoc = Math.min(Math.max(data.minSoc, 0), 100);
+  const maxSoc = Math.min(Math.max(data.maxSoc, 0), 100);
 
   const state = getBatteryState(power);
 
@@ -96,7 +98,7 @@ export function renderBatteryDisplay(
       ${svg`
         <svg
           class="battery battery--${state}"
-          viewBox="0 0 180 320"
+          viewBox="0 25 180 320"
           role="img"
           aria-label="Battery state of charge ${soc}%"
         >
@@ -124,16 +126,6 @@ export function renderBatteryDisplay(
               <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
             </linearGradient>
           </defs>
-
-          <text
-            class="battery-soc-value"
-            x="90"
-            y="24"
-            text-anchor="middle"
-            dominant-baseline="middle"
-          >
-            ${soc}%
-          </text>
 
           <path
             class="battery-terminal"
@@ -179,6 +171,25 @@ export function renderBatteryDisplay(
                   `
                 : null
             }
+            
+            ${renderSocLimitLine(
+              minSoc,
+              "min",
+              innerX,
+              innerY,
+              innerWidth,
+              innerHeight
+            )}
+
+            ${renderSocLimitLine(
+              maxSoc,
+              "max",
+              innerX,
+              innerY,
+              innerWidth,
+              innerHeight
+            )}
+
 
             ${
               state !== "idle"
@@ -195,43 +206,10 @@ export function renderBatteryDisplay(
                 : null
             }
           </g>
-
-          <text
-            class="battery-state-label"
-            x="90"
-            y="312"
-            text-anchor="middle"
-          >
-            ${getStateLabel(state, power)}
-          </text>
         </svg>
       `}
     </div>
   `;
-}
-
-/**
- * Returns a readable label for the current battery state.
- */
-function getStateLabel(
-  state: BatteryState,
-  power: number
-): string {
-  const formattedPower =
-    Math.abs(power) >= 1000
-      ? `${(Math.abs(power) / 1000).toFixed(2)} kW`
-      : `${Math.abs(power).toFixed(0)} W`;
-
-  switch (state) {
-    case "charging":
-      return `Charging · ${formattedPower}`;
-
-    case "discharging":
-      return `Discharging · ${formattedPower}`;
-
-    default:
-      return "Idle";
-  }
 }
 
 /**
@@ -294,6 +272,52 @@ function renderFlowAnimation(
         height="${barHeight}"
         rx="${barHeight / 2}"
       />
+    </g>
+  `;
+}
+
+/**
+ * Renders a horizontal SOC limit line inside the battery.
+ *
+ * The line is hidden when the limit is equal to 0% or 100%.
+ */
+/**
+ * Renders a horizontal SOC limit line inside the battery.
+ *
+ * The line is hidden when the limit is equal to 0% or 100%.
+ */
+function renderSocLimitLine(
+  value: number,
+  type: "min" | "max",
+  innerX: number,
+  innerY: number,
+  innerWidth: number,
+  innerHeight: number
+): TemplateResult | null {
+  if (value <= 0 || value >= 100) {
+    return null;
+  }
+
+  const y = innerY + innerHeight - (innerHeight * value) / 100;
+
+  return svg`
+    <g class="battery-limit battery-limit--${type}">
+      <line
+        class="battery-limit-line"
+        x1="${innerX + 4}"
+        y1="${y}"
+        x2="${innerX + innerWidth - 4}"
+        y2="${y}"
+      />
+
+      <text
+        class="battery-limit-label"
+        x="${innerX + innerWidth - 6}"
+        y="${y - 4}"
+        text-anchor="end"
+      >
+        ${value}%
+      </text>
     </g>
   `;
 }
