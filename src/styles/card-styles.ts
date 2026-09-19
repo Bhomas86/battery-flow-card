@@ -176,22 +176,25 @@ export const cardStyles = css`
   }
 
   .battery-details__row {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: baseline;
     margin-bottom: 8px;
   }
 
   .battery-details__label {
     color: var(--secondary-text-color, #666666);
-    font-size: 20px;
+    font-size: 14px;
+    white-space: nowrap;
   }
 
   .battery-details__value {
     color: var(--primary-text-color, #424242);
-    font-size: 20px;
+    font-size: 14px;
     font-weight: 600;
     text-align: right;
+    white-space: nowrap;
   }
 
   .power-bar-wrapper {
@@ -246,32 +249,63 @@ export const cardStyles = css`
     background: #ff9800;
   }
 
-  .development-controls {
-    width: min(520px, calc(100% - 32px));
-    margin: 0 auto 24px;
+  .card-error {
     padding: 16px;
-    border: 1px solid rgba(127, 127, 127, 0.25);
-    border-radius: 12px;
+    color: var(--error-color, #db4437);
+    font-weight: 600;
   }
 
-  .development-controls label {
-    display: grid;
-    grid-template-columns: 120px 1fr 80px;
-    gap: 12px;
-    align-items: center;
-    min-height: 42px;
-  }
 
-  .development-controls input[type="range"] {
-    width: 100%;
-  }
 
-  .development-controls input[type="number"] {
-    width: 100%;
-    box-sizing: border-box;
-  }
 
-  .development-controls strong {
-    text-align: right;
+
+  @media (max-width: 450px) {
+    .battery-summary {
+      grid-template-columns: 140px 1fr;
+      gap: 6px;
+      width: calc(100% - 20px);
+    }
+
+    .battery {
+      width: 140px;
+      height: 218px;
+    }
+
+    .battery-wrapper {
+      padding: 4px 0;
+    }
+
+    .battery-details__soc {
+      margin-bottom: 14px;
+      font-size: 38px;
+    }
+
+    .battery-details__row {
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .battery-details__label {
+      font-size: 13px;
+    }
+
+    .battery-details__value {
+      font-size: 13px;
+    }
+
+    .power-bar-wrapper {
+      width: calc(100% - 20px);
+      margin-top: -8px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .power-bar-labels {
+      font-size: 11px;
+    }
+
+    .battery-card-header {
+      font-size: 26px;
+    }
   }
 `;
