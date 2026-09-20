@@ -303,4 +303,11 @@ export const cardStyles = css`
       font-size: 10px;
     }
   }
+  
+  .card-setup-message {
+    padding: 32px 16px;
+    color: var(--secondary-text-color, #666666);
+    font-size: 14px;
+    text-align: center;
+  }
 `;

@@ -8,6 +8,9 @@ import {
 import { renderBatteryDisplay } from "./components/battery-display";
 import { renderBatteryDetails } from "./components/battery-details";
 import { renderPowerBar } from "./components/power-bar";
+
+import { getBatteryFlowCardConfigForm } from "./config/config-form";
+
 import { cardStyles } from "./styles/card-styles";
 
 import { BatteryDisplayData } from "./types/battery";
@@ -27,6 +30,7 @@ import {
 @customElement("battery-flow-card")
 export class BatteryFlowCard extends LitElement {
   static styles = cardStyles;
+  
 
   /**
    * Home Assistant runtime object containing entity states.
@@ -42,40 +46,44 @@ export class BatteryFlowCard extends LitElement {
 
   /**
    * Applies the Lovelace card configuration.
+   *
+   * Incomplete configurations are allowed because the Home Assistant
+   * visual editor builds the configuration step by step.
    */
   public setConfig(config: BatteryFlowCardConfig): void {
-    if (!config.soc_entity) {
-      throw new Error("soc_entity is required");
-    }
-
-    const hasSinglePowerEntity = Boolean(
-      config.power_entity
-    );
-
-    const hasSplitPowerEntities = Boolean(
-      config.charging_power_entity ||
-      config.discharging_power_entity
-    );
-
-    if (
-      !hasSinglePowerEntity &&
-      !hasSplitPowerEntities
-    ) {
-      throw new Error(
-        "Configure either power_entity or charging/discharging power entities"
-      );
-    }
-
-    if (!config.capacity_kwh) {
-      throw new Error("capacity_kwh is required");
+    if (!config) {
+      throw new Error("Invalid configuration");
     }
 
     this.config = {
       ...config,
+      capacity_kwh: config.capacity_kwh ?? 7,
       min_soc: config.min_soc ?? 0,
       max_soc: config.max_soc ?? 100
     };
   }
+
+  /**
+   * Returns the graphical Home Assistant configuration form.
+   */
+  public static getConfigForm() {
+    return getBatteryFlowCardConfigForm();
+  }
+
+  /**
+   * Returns a default card configuration for the Lovelace UI.
+   */
+  public static getStubConfig(): Record<string, unknown> {
+    return {
+      name: "Battery",
+      soc_entity: "",
+      charging_power_entity: "",
+      discharging_power_entity: "",
+      capacity_kwh: 7
+    };
+  }
+
+
 
   /**
    * Renders the complete Home Assistant card.
@@ -83,6 +91,30 @@ export class BatteryFlowCard extends LitElement {
   protected render() {
     if (!this.config) {
       return html``;
+    }
+
+    const hasSocEntity = Boolean(
+      this.config.soc_entity
+    );
+
+    const hasPowerEntity = Boolean(
+      this.config.power_entity ||
+      this.config.charging_power_entity ||
+      this.config.discharging_power_entity
+    );
+
+    if (!hasSocEntity || !hasPowerEntity) {
+      return html`
+        <div class="card card--setup">
+          <div class="battery-card-header">
+            ${this.config.name ?? "Battery"}
+          </div>
+
+          <div class="card-setup-message">
+            Configure the battery entities to display the preview.
+          </div>
+        </div>
+      `;
     }
 
     if (!this.hass) {
@@ -266,3 +298,25 @@ export class BatteryFlowCard extends LitElement {
   }
 
 }
+
+declare global {
+  interface Window {
+    customCards?: Array<{
+      type: string;
+      name: string;
+      description?: string;
+      preview?: boolean;
+      documentationURL?: string;
+    }>;
+  }
+}
+
+window.customCards = window.customCards || [];
+
+window.customCards.push({
+  type: "battery-flow-card",
+  name: "Battery Flow Card",
+  description: "Visualizes battery SOC, power flow and SOC limits.",
+  preview: true,
+  documentationURL: "https://github.com/Bhomas86/battery-flow-card"
+});
