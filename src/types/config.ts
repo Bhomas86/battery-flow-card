@@ -8,23 +8,18 @@ export interface BatteryFlowCardConfig {
 
   soc_entity: string;
 
-  /**
-   * Optional bidirectional power entity.
-   *
-   * Positive values mean charging.
-   * Negative values mean discharging.
-   */
   power_entity?: string;
-
-  /**
-   * Optional separate charging and discharging power entities.
-   *
-   * These values are expected to be positive.
-   */
   charging_power_entity?: string;
   discharging_power_entity?: string;
 
   capacity_kwh: number;
+
+  /**
+   * Optional entity containing the currently stored battery energy.
+   *
+   * Supported units should be normalized later to kWh.
+   */
+  current_capacity_entity?: string;
 
   min_soc?: number;
   max_soc?: number;

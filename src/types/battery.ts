@@ -5,9 +5,13 @@ export interface BatteryDisplayData {
   name: string;
   soc: number;
   power: number;
-  maxChargePower: number;
-  maxDischargePower: number;
+
   capacityKwh: number;
+  currentCapacityKwh: number;
+
   minSoc: number;
   maxSoc: number;
+
+  maxChargePower: number;
+  maxDischargePower: number;
 }

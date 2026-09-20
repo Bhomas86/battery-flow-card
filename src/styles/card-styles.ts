@@ -8,6 +8,25 @@ export const cardStyles = css`
     display: block;
   }
 
+  .card {
+    container-type: inline-size;
+    container-name: battery-card;
+
+    --battery-width: clamp(105px, 34cqw, 180px);
+    --summary-gap: clamp(4px, 2cqw, 8px);
+  }
+
+  @container battery-card (max-width: 520px) {
+    .card {
+      --battery-width: clamp(95px, 28cqw, 145px);
+      --summary-gap: 6px;
+    }
+
+    .battery-details__soc {
+      font-size: clamp(36px, 9cqw, 52px);
+    }
+  }
+
   .battery-card-header {
     width: min(520px, calc(100% - 32px));
     margin: 16px auto 0px;
@@ -20,13 +39,12 @@ export const cardStyles = css`
 
   .battery-summary {
     display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 8px;
+    grid-template-columns: var(--battery-width) minmax(0, 1fr);
+    gap: var(--summary-gap);
     align-items: center;
-    width: min(520px, calc(100% - 32px));
+    width: min(520px, calc(100% - 20px));
     margin: 0 auto;
   }
-
   .battery-summary__visual {
     display: flex;
     justify-content: center;
@@ -35,6 +53,7 @@ export const cardStyles = css`
   .battery-summary__details {
     display: flex;
     align-items: center;
+    min-width: 0;
   }
 
   .battery-wrapper {
@@ -45,8 +64,9 @@ export const cardStyles = css`
   }
 
   .battery {
-    width: 180px;
-    height: 320px;
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   .battery-outline {
@@ -165,12 +185,13 @@ export const cardStyles = css`
 
   .battery-details {
     width: 100%;
+    min-width: 0;
   }
 
   .battery-details__soc {
     margin-bottom: 20px;
     color: var(--primary-text-color, #424242);
-    font-size: 60px;
+    font-size: clamp(38px, 10cqw, 60px);
     font-weight: 700;
     line-height: 1;
   }
@@ -185,13 +206,14 @@ export const cardStyles = css`
 
   .battery-details__label {
     color: var(--secondary-text-color, #666666);
-    font-size: 14px;
-    white-space: nowrap;
+    font-size: clamp(12px, 3.2cqw, 14px);
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .battery-details__value {
     color: var(--primary-text-color, #424242);
-    font-size: 14px;
+    font-size: clamp(12px, 3.2cqw, 14px);
     font-weight: 600;
     text-align: right;
     white-space: nowrap;
@@ -257,55 +279,28 @@ export const cardStyles = css`
 
 
 
-
-
-  @media (max-width: 450px) {
-    .battery-summary {
-      grid-template-columns: 140px 1fr;
-      gap: 6px;
-      width: calc(100% - 20px);
-    }
-
-    .battery {
-      width: 140px;
-      height: 218px;
-    }
-
-    .battery-wrapper {
-      padding: 4px 0;
-    }
-
-    .battery-details__soc {
-      margin-bottom: 14px;
-      font-size: 38px;
+  @container battery-card (max-width: 370px) {
+    .card {
+      --battery-width: clamp(85px, 26cqw, 120px);
+      --summary-gap: 4px;
     }
 
     .battery-details__row {
-      gap: 8px;
+      gap: 6px;
       margin-bottom: 6px;
     }
 
-    .battery-details__label {
-      font-size: 13px;
-    }
-
-    .battery-details__value {
-      font-size: 13px;
-    }
-
-    .power-bar-wrapper {
-      width: calc(100% - 20px);
-      margin-top: -8px;
-      padding-left: 0;
-      padding-right: 0;
-    }
-
-    .power-bar-labels {
-      font-size: 11px;
+    .battery-details__soc {
+      margin-bottom: 12px;
+      font-size: 34px;
     }
 
     .battery-card-header {
-      font-size: 26px;
+      font-size: 24px;
+    }
+
+    .power-bar-labels {
+      font-size: 10px;
     }
   }
 `;

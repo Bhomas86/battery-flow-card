@@ -26,6 +26,7 @@ export function estimateTimeToSocLimit(
   soc: number,
   power: number,
   capacityKwh: number,
+  currentCapacityKwh: number,
   minSoc: number,
   maxSoc: number
 ): TimeEstimationResult {
@@ -48,19 +49,24 @@ export function estimateTimeToSocLimit(
       ? maxSoc
       : minSoc;
 
-  const socDifference =
-    state === "charging"
-      ? targetSoc - soc
-      : soc - targetSoc;
+  const targetEnergyKwh =
+    capacityKwh * (targetSoc / 100);
 
-  if (socDifference <= 0) {
+  let requiredEnergyKwh: number;
+
+  if (state === "charging") {
+    requiredEnergyKwh =
+      targetEnergyKwh - currentCapacityKwh;
+  } else {
+    requiredEnergyKwh =
+      currentCapacityKwh - targetEnergyKwh;
+  }
+
+  if (requiredEnergyKwh <= 0) {
     return {
       status: "target_reached"
     };
   }
-
-  const requiredEnergyKwh =
-    capacityKwh * (socDifference / 100);
 
   const hours =
     requiredEnergyKwh / absolutePowerKw;

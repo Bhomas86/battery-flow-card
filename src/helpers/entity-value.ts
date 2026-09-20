@@ -68,3 +68,52 @@ export function getPowerEntityStateWatts(
       return value;
   }
 }
+
+/**
+ * Reads an energy entity and converts its value to kWh.
+ *
+ * Supported units:
+ * - Wh
+ * - kWh
+ * - MWh
+ */
+export function getEnergyEntityStateKwh(
+  hass: HomeAssistant,
+  entityId: string
+): number | null {
+  const entity = hass.states[entityId];
+
+  if (!entity) {
+    return null;
+  }
+
+  const value = Number(entity.state);
+
+  if (!Number.isFinite(value)) {
+    return null;
+  }
+
+  const unit = entity.attributes.unit_of_measurement;
+
+  switch (unit) {
+    case "Wh":
+      return value / 1000;
+
+    case "kWh":
+      return value;
+
+    case "MWh":
+      return value * 1000;
+
+    case undefined:
+    case null:
+      return value;
+
+    default:
+      console.warn(
+        `[Battery Flow Card] Unsupported energy unit "${String(unit)}" for ${entityId}. Value is interpreted as kWh.`
+      );
+
+      return value;
+  }
+}

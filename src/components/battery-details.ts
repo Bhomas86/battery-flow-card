@@ -14,13 +14,13 @@ import {
 export function renderBatteryDetails(
   data: BatteryDisplayData
 ): TemplateResult {
-  const currentCapacityKwh = (data.capacityKwh * data.soc) / 100;
   const state = getBatteryState(data.power);
   const timeEstimation = estimateTimeToSocLimit(
     state,
     data.soc,
     data.power,
     data.capacityKwh,
+    data.currentCapacityKwh,
     data.minSoc,
     data.maxSoc
   );
@@ -42,7 +42,7 @@ export function renderBatteryDetails(
         </span>
 
         <span class="battery-details__value">
-          ${formatEnergy(currentCapacityKwh)}
+          ${formatEnergy(data.currentCapacityKwh)}
         </span>
       </div>
 

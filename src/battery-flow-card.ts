@@ -16,6 +16,7 @@ import { HomeAssistant } from "./types/home-assistant";
 
 import { getBatteryPower } from "./helpers/power-source";
 import {
+  getEnergyEntityStateKwh,
   getNumericEntityState,
   getPowerEntityStateWatts
 } from "./helpers/entity-value";
@@ -152,6 +153,17 @@ export class BatteryFlowCard extends LitElement {
 
     const soc = Number(socState.state);
 
+    const calculatedCurrentCapacityKwh =
+      this.config.capacity_kwh * (soc / 100);
+
+    const currentCapacityKwh =
+      this.config.current_capacity_entity
+        ? getEnergyEntityStateKwh(
+            this.hass,
+            this.config.current_capacity_entity
+          ) ?? calculatedCurrentCapacityKwh
+        : calculatedCurrentCapacityKwh;
+
     const minSoc = this.getConfiguredNumericValue(
       this.config.min_soc_entity,
       this.config.min_soc,
@@ -185,6 +197,7 @@ export class BatteryFlowCard extends LitElement {
       soc,
       power,
       capacityKwh: this.config.capacity_kwh,
+      currentCapacityKwh,
       minSoc,
       maxSoc,
       maxChargePower,
