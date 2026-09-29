@@ -18,11 +18,13 @@ import { BatteryFlowCardConfig } from "./types/config";
 import { HomeAssistant } from "./types/home-assistant";
 
 import { getBatteryPower } from "./helpers/power-source";
+import { getBatterySimData } from "./helpers/battery-sim-device";
 import {
   getEnergyEntityStateKwh,
   getNumericEntityState,
   getPowerEntityStateWatts
 } from "./helpers/entity-value";
+
 
 /**
  * Main custom element for the Battery Flow Card.
@@ -76,10 +78,23 @@ export class BatteryFlowCard extends LitElement {
   public static getStubConfig(): Record<string, unknown> {
     return {
       name: "Battery",
+      use_battery_sim_device: false,
+      battery_sim_device: "",
+
       soc_entity: "",
-      charging_power_entity: "",
-      discharging_power_entity: "",
-      capacity_kwh: 7
+
+      use_split_power_entities: false,
+      power_entity: "",
+
+      capacity_kwh: 7,
+
+      use_soc_limit_entities: false,
+      min_soc: 0,
+      max_soc: 100,
+
+      use_power_limit_entities: false,
+      max_charge_power: 3000,
+      max_discharge_power: 3000
     };
   }
 
@@ -93,17 +108,31 @@ export class BatteryFlowCard extends LitElement {
       return html``;
     }
 
-    const hasSocEntity = Boolean(
-      this.config.soc_entity
-    );
+    const usesBatterySimDevice =
+      Boolean(
+        this.config.use_battery_sim_device &&
+        this.config.battery_sim_device
+      );
 
-    const hasPowerEntity = Boolean(
-      this.config.power_entity ||
-      this.config.charging_power_entity ||
-      this.config.discharging_power_entity
-    );
+    const hasSocEntity =
+      Boolean(this.config.soc_entity);
 
-    if (!hasSocEntity || !hasPowerEntity) {
+    const hasPowerEntity =
+      Boolean(
+        this.config.power_entity ||
+        this.config.charging_power_entity ||
+        this.config.discharging_power_entity
+      );
+
+    /**
+     * Universal mode requires manually configured SOC and power entities.
+     * Battery Simulator mode resolves these values automatically from
+     * the selected Home Assistant device.
+     */
+    if (
+      !usesBatterySimDevice &&
+      (!hasSocEntity || !hasPowerEntity)
+    ) {
       return html`
         <div class="card card--setup">
           <div class="battery-card-header">
@@ -165,6 +194,18 @@ export class BatteryFlowCard extends LitElement {
       return null;
     }
 
+
+    if (
+      this.config.use_battery_sim_device &&
+      this.config.battery_sim_device
+    ) {
+      return getBatterySimData(
+        this.hass,
+        this.config.battery_sim_device
+      );
+    }
+
+    // Existing universal configuration logic continues here.
     const socState =
       this.hass.states[this.config.soc_entity];
 

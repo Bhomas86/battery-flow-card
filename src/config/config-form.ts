@@ -12,10 +12,38 @@ export function getBatteryFlowCardConfigForm() {
       },
 
       {
+        name: "use_battery_sim_device",
+        default: false,
+        selector: {
+          boolean: {}
+        }
+      },
+
+      {
+        name: "battery_sim_device",
+        selector: {
+          device: {
+            filter: {
+              integration: "battery_sim"
+            }
+          }
+        },
+        visible: {
+          field: "use_battery_sim_device",
+          value: true
+        }
+      },
+
+      {
         name: "soc_entity",
         required: true,
         selector: {
           entity: {}
+        },
+        visible: {
+          field: "use_battery_sim_device",
+          operator: "not_eq",
+          value: true
         }
       },
 
@@ -23,6 +51,11 @@ export function getBatteryFlowCardConfigForm() {
         name: "current_capacity_entity",
         selector: {
           entity: {}
+        },
+        visible: {
+          field: "use_battery_sim_device",
+          operator: "not_eq",
+          value: true
         }
       },
 
@@ -36,6 +69,11 @@ export function getBatteryFlowCardConfigForm() {
             mode: "box",
             unit_of_measurement: "kWh"
           }
+        },
+        visible: {
+          field: "use_battery_sim_device",
+          operator: "not_eq",
+          value: true
         }
       },
 
@@ -86,7 +124,12 @@ export function getBatteryFlowCardConfigForm() {
                 value: true
             }
             }
-        ]
+        ],
+        visible: {
+          field: "use_battery_sim_device",
+          operator: "not_eq",
+          value: true
+        }
        },
 
       {
@@ -160,7 +203,12 @@ export function getBatteryFlowCardConfigForm() {
                 value: true
             }
             }
-        ]
+        ],
+        visible: {
+          field: "use_battery_sim_device",
+          operator: "not_eq",
+          value: true
+        }
        },
 
       {
@@ -232,7 +280,12 @@ export function getBatteryFlowCardConfigForm() {
                 value: true
             }
             }
-        ]
+        ],
+        visible: {
+          field: "use_battery_sim_device",
+          operator: "not_eq",
+          value: true
+        }
        }
     ],
 
@@ -268,6 +321,10 @@ export function getBatteryFlowCardConfigForm() {
           return "Maximum charging power";
         case "max_discharge_power":
           return "Maximum discharging power";
+        case "use_battery_sim_device":
+          return "Use Battery Simulator device";
+        case "battery_sim_device":
+          return "Battery Simulator device";
         default:
           return undefined;
       }
