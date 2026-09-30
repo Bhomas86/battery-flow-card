@@ -1,6 +1,8 @@
 # Battery Flow Card
 
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Custom%20Card-41BDF5?logo=home-assistant)
+![HACS](https://img.shields.io/badge/HACS-Compatible-41BDF5)
+![GitHub Downloads](https://img.shields.io/github/downloads/Bhomas86/battery-flow-card/total)
 ![GitHub License](https://img.shields.io/github/license/Bhomas86/battery-flow-card)
 ![GitHub Release](https://img.shields.io/github/v/release/Bhomas86/battery-flow-card)
 ![GitHub Stars](https://img.shields.io/github/stars/Bhomas86/battery-flow-card)
@@ -11,25 +13,14 @@ von Batteriespeichern, Lade- und Entladeleistung sowie SOC-Grenzen.
 
 ## Installation
 
-### Automatisch über HACS (empfohlen)
+### HACS (empfohlen)
 
-Die **Battery Flow Card** kann über [HACS](https://hacs.xyz/) installiert und anschließend bequem über HACS aktualisiert werden.
-
-Solange die Karte noch nicht in der standardmäßigen HACS-Liste enthalten ist, muss das Repository einmalig als benutzerdefiniertes Repository hinzugefügt werden:
+Die einfachste Möglichkeit zur Installation und Aktualisierung der **Battery Flow Card** ist über [HACS](https://hacs.xyz/).
 
 1. Öffne **HACS** in Home Assistant.
-2. Öffne oben rechts das Menü **⋮** und wähle **Benutzerdefinierte Repositories** / **Custom repositories**.
-3. Füge folgendes Repository hinzu:
-
-   ```text
-   https://github.com/Bhomas86/battery-flow-card
-   ```
-
-4. Wähle als Kategorie **Dashboard** / **Lovelace**.
-5. Suche anschließend in HACS nach **Battery Flow Card** und installiere die Karte.
-6. Lade Home Assistant bzw. den Browser anschließend neu.
-
-Nach einer Aufnahme in die standardmäßige HACS-Liste kann die Karte direkt über die HACS-Suche installiert werden, ohne das Repository vorher manuell hinzuzufügen.
+2. Suche nach **Battery Flow Card**.
+3. Öffne den Eintrag und wähle **Download**.
+4. Lade Home Assistant bzw. den Browser nach der Installation neu.
 
 HACS legt die benötigte Lovelace-Ressource normalerweise automatisch an. Falls dies nicht geschieht, kann sie unter  
 **Einstellungen → Dashboards → ⋮ → Ressourcen** manuell ergänzt werden:
