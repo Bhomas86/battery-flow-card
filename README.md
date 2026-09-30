@@ -9,6 +9,74 @@
 Eine Custom Lovelace Card für Home Assistant zur übersichtlichen Darstellung
 von Batteriespeichern, Lade- und Entladeleistung sowie SOC-Grenzen.
 
+## Installation
+
+### Automatisch über HACS (empfohlen)
+
+Die **Battery Flow Card** kann über [HACS](https://hacs.xyz/) installiert und anschließend bequem über HACS aktualisiert werden.
+
+Solange die Karte noch nicht in der standardmäßigen HACS-Liste enthalten ist, muss das Repository einmalig als benutzerdefiniertes Repository hinzugefügt werden:
+
+1. Öffne **HACS** in Home Assistant.
+2. Öffne oben rechts das Menü **⋮** und wähle **Benutzerdefinierte Repositories** / **Custom repositories**.
+3. Füge folgendes Repository hinzu:
+
+   ```text
+   https://github.com/Bhomas86/battery-flow-card
+   ```
+
+4. Wähle als Kategorie **Dashboard** / **Lovelace**.
+5. Suche anschließend in HACS nach **Battery Flow Card** und installiere die Karte.
+6. Lade Home Assistant bzw. den Browser anschließend neu.
+
+Nach einer Aufnahme in die standardmäßige HACS-Liste kann die Karte direkt über die HACS-Suche installiert werden, ohne das Repository vorher manuell hinzuzufügen.
+
+HACS legt die benötigte Lovelace-Ressource normalerweise automatisch an. Falls dies nicht geschieht, kann sie unter  
+**Einstellungen → Dashboards → ⋮ → Ressourcen** manuell ergänzt werden:
+
+```text
+/hacsfiles/battery-flow-card/battery-flow-card.js
+```
+
+Ressourcentyp:
+
+```text
+JavaScript-Modul
+```
+
+### Manuelle Installation
+
+1. Lade `battery-flow-card.js` aus dem neuesten [GitHub Release](https://github.com/Bhomas86/battery-flow-card/releases/latest) herunter.
+2. Kopiere die Datei beispielsweise nach:
+
+   ```text
+   /config/www/battery-flow-card/battery-flow-card.js
+   ```
+
+3. Öffne in Home Assistant:
+
+   **Einstellungen → Dashboards → ⋮ → Ressourcen**
+
+4. Füge eine neue Ressource hinzu:
+
+   ```text
+   /local/battery-flow-card/battery-flow-card.js
+   ```
+
+5. Wähle als Typ:
+
+   ```text
+   JavaScript-Modul
+   ```
+
+6. Lade den Browser anschließend vollständig neu, gegebenenfalls mit `Strg + F5`.
+
+Danach kann die Karte über den visuellen Karteneditor hinzugefügt oder per YAML verwendet werden:
+
+```yaml
+type: custom:battery-flow-card
+```
+
 ## Vorschau
 
 ![Battery Flow Card Beispiel](/images/Battery-Flow-Card.jpg)
@@ -76,6 +144,15 @@ Aktuell stehen folgende Übersetzungen zur Verfügung:
 
 - Deutsch
 - Englisch
+- Niederländisch
+- Französisch
+- Polnisch
+- Spanisch
+- Italienisch
+- Schwedisch
+- Portugiesisch
+- Norwegisch
+
 
 Weitere Sprachen können später ergänzt werden.
 

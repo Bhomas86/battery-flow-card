@@ -176,11 +176,11 @@ export class BatteryFlowCard extends LitElement {
           </div>
 
           <div class="battery-summary__details">
-            ${renderBatteryDetails(batteryData)}
+            ${renderBatteryDetails(batteryData, this.hass.language)}
           </div>
         </div>
 
-        ${renderPowerBar(batteryData)}
+        ${renderPowerBar(batteryData, this.hass.language)}
       </div>
     `;
   }

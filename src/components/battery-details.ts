@@ -12,7 +12,8 @@ import {
  * Renders the textual battery details shown next to the battery.
  */
 export function renderBatteryDetails(
-  data: BatteryDisplayData
+  data: BatteryDisplayData,
+  language?: string
 ): TemplateResult {
   const state = getBatteryState(data.power);
   const timeEstimation = estimateTimeToSocLimit(
@@ -38,7 +39,7 @@ export function renderBatteryDetails(
 
       <div class="battery-details__row">
         <span class="battery-details__label">
-          ${translate("current_capacity")}
+          ${translate("current_capacity", language)}
         </span>
 
         <span class="battery-details__value">
@@ -48,7 +49,7 @@ export function renderBatteryDetails(
 
       <div class="battery-details__row">
         <span class="battery-details__label">
-          ${translate(state)}
+          ${translate(state, language)}
         </span>
 
         <span class="battery-details__value">
@@ -60,8 +61,8 @@ export function renderBatteryDetails(
         <span class="battery-details__label">
           ${
             targetSoc !== null
-              ? `${translate("estimated_time_to")} ${targetSoc}%`
-              : translate("estimated_time")
+              ? `${translate("estimated_time_to", language)} ${targetSoc}%`
+              : translate("estimated_time", language)
           }
         </span>
 
@@ -107,10 +108,11 @@ function formatPower(power: number): string {
  * Formats the SOC time estimation for display.
  */
 function formatTimeEstimation(
-  result: TimeEstimationResult
+  result: TimeEstimationResult,
+  language?: string
 ): string {
   if (result.status === "target_reached") {
-    return translate("target_reached");
+    return translate("target_reached", language);
   }
 
   if (result.status === "unavailable") {

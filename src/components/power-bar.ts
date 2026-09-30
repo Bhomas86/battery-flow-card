@@ -10,7 +10,8 @@ import { translate } from "../helpers/localize";
  * Charging is displayed to the right of the center point.
  */
 export function renderPowerBar(
-  data: BatteryDisplayData
+  data: BatteryDisplayData,
+  language?: string
 ): TemplateResult {
   const power = data.power;
 
@@ -32,12 +33,12 @@ export function renderPowerBar(
     <div class="power-bar-wrapper">
       <div class="power-bar-labels">
         <span>
-          ${translate("max_discharge")}:
+          ${translate("max_discharge", language)}:
           ${formatPower(data.maxDischargePower)}
         </span>
 
         <span>
-          ${translate("max_charge")}:
+          ${translate("max_charge", language)}:
           ${formatPower(data.maxChargePower)}
         </span>
       </div>
