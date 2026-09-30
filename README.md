@@ -15,6 +15,7 @@ von Batteriespeichern, Lade- und Entladeleistung sowie SOC-Grenzen.
 
 ### HACS (empfohlen)
 
+[![Open your Home Assistant instance and open this repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Bhomas86&repository=battery-flow-card)
 Die einfachste Möglichkeit zur Installation und Aktualisierung der **Battery Flow Card** ist über [HACS](https://hacs.xyz/).
 
 1. Öffne **HACS** in Home Assistant.
