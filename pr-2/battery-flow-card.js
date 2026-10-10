@@ -1730,6 +1730,7 @@ var $ = class extends G {
 		if (!e) throw Error("Invalid configuration");
 		this.config = {
 			...e,
+			enable_entity_links: e.enable_entity_links ?? !0,
 			capacity_kwh: e.capacity_kwh ?? 7,
 			min_soc: e.min_soc ?? 0,
 			max_soc: e.max_soc ?? 100
@@ -1741,6 +1742,7 @@ var $ = class extends G {
 	static getStubConfig() {
 		return {
 			name: "Battery",
+			enable_entity_links: !0,
 			use_battery_sim_device: !1,
 			battery_sim_device: "",
 			soc_entity: "",
@@ -1775,10 +1777,20 @@ var $ = class extends G {
         </div>
       `;
 		let r = this.getBatteryData();
-		return r ? P`
+		if (!r) return P`
+        <div class="card-error">
+          Battery data unavailable
+        </div>
+      `;
+		let i = this.config.enable_entity_links !== !1, a = e ? this.config.battery_sim_device : void 0;
+		return P`
       <div class="card">
         <div class="battery-card-header">
-          ${r.name}
+          ${i && a && this.hass.devices[a] && a ? P`<a
+                class="battery-card-header__link"
+                href="/config/devices/device/${encodeURIComponent(a)}"
+                title="Open Battery Simulator device"
+              >${r.name}</a>` : r.name}
         </div>
 
         <div class="battery-summary">
@@ -1787,17 +1799,13 @@ var $ = class extends G {
           </div>
 
           <div class="battery-summary__details">
-            ${Be(r, this.hass.language, (e) => this.showMoreInfo(e))}
+            ${Be(r, this.hass.language, i ? (e) => this.showMoreInfo(e) : void 0)}
           </div>
         </div>
 
         ${Ke(r, this.hass.language)}
       </div>
-    ` : P`
-        <div class="card-error">
-          Battery data unavailable
-        </div>
-      `;
+    `;
 	}
 	getBatteryData() {
 		if (!this.hass || !this.config) return null;
