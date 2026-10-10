@@ -8,6 +8,12 @@ on:
 permissions:
   contents: write
 
+# Only the newest build may publish this branch's test JavaScript.
+# Prevent parallel runs from replacing the same file with a stale SHA.
+concurrency:
+  group: publish-pr2-test-js
+  cancel-in-progress: true
+
 jobs:
   publish:
     name: Build and publish single JavaScript file
