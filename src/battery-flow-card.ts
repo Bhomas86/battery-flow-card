@@ -59,6 +59,7 @@ export class BatteryFlowCard extends LitElement {
 
     this.config = {
       ...config,
+      enable_entity_links: config.enable_entity_links ?? true,
       capacity_kwh: config.capacity_kwh ?? 7,
       min_soc: config.min_soc ?? 0,
       max_soc: config.max_soc ?? 100
@@ -78,6 +79,7 @@ export class BatteryFlowCard extends LitElement {
   public static getStubConfig(): Record<string, unknown> {
     return {
       name: "Battery",
+      enable_entity_links: true,
       use_battery_sim_device: false,
       battery_sim_device: "",
 
@@ -164,10 +166,25 @@ export class BatteryFlowCard extends LitElement {
       `;
     }
 
+    const linksEnabled = this.config.enable_entity_links !== false;
+    const simulatorDeviceId = usesBatterySimDevice
+      ? this.config.battery_sim_device
+      : undefined;
+    const hasDeviceLink =
+      linksEnabled &&
+      simulatorDeviceId &&
+      Boolean(this.hass.devices[simulatorDeviceId]);
+
     return html`
       <div class="card">
         <div class="battery-card-header">
-          ${batteryData.name}
+          ${hasDeviceLink && simulatorDeviceId
+            ? html`<a
+                class="battery-card-header__link"
+                href="/config/devices/device/${encodeURIComponent(simulatorDeviceId)}"
+                title="Open Battery Simulator device"
+              >${batteryData.name}</a>`
+            : batteryData.name}
         </div>
 
         <div class="battery-summary">
@@ -179,7 +196,7 @@ export class BatteryFlowCard extends LitElement {
             ${renderBatteryDetails(
               batteryData,
               this.hass.language,
-              (entityId) => this.showMoreInfo(entityId)
+              linksEnabled ? (entityId) => this.showMoreInfo(entityId) : undefined
             )}
           </div>
         </div>
