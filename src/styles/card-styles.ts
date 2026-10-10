@@ -196,6 +196,31 @@ export const cardStyles = css`
     line-height: 1;
   }
 
+  .battery-details__entity-button {
+    appearance: none;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 2px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    text-align: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .battery-details__entity-button:hover {
+    text-decoration: underline;
+  }
+
+  .battery-details__entity-button:focus-visible {
+    outline: 2px solid var(--primary-color, #03a9f4);
+    outline-offset: 3px;
+  }
+
   .battery-details__row {
     display: grid;
     grid-template-columns: 1fr auto;
