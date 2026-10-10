@@ -176,7 +176,11 @@ export class BatteryFlowCard extends LitElement {
           </div>
 
           <div class="battery-summary__details">
-            ${renderBatteryDetails(batteryData, this.hass.language)}
+            ${renderBatteryDetails(
+              batteryData,
+              this.hass.language,
+              (entityId) => this.showMoreInfo(entityId)
+            )}
           </div>
         </div>
 
@@ -229,13 +233,15 @@ export class BatteryFlowCard extends LitElement {
     const calculatedCurrentCapacityKwh =
       this.config.capacity_kwh * (soc / 100);
 
+    const actualCurrentCapacityKwh = this.config.current_capacity_entity
+      ? getEnergyEntityStateKwh(
+          this.hass,
+          this.config.current_capacity_entity
+        )
+      : null;
+
     const currentCapacityKwh =
-      this.config.current_capacity_entity
-        ? getEnergyEntityStateKwh(
-            this.hass,
-            this.config.current_capacity_entity
-          ) ?? calculatedCurrentCapacityKwh
-        : calculatedCurrentCapacityKwh;
+      actualCurrentCapacityKwh ?? calculatedCurrentCapacityKwh;
 
     const minSoc = this.getConfiguredNumericValue(
       this.config.min_soc_entity,
@@ -271,11 +277,41 @@ export class BatteryFlowCard extends LitElement {
       power,
       capacityKwh: this.config.capacity_kwh,
       currentCapacityKwh,
+      socEntityId: this.config.soc_entity,
+      // Do not link a calculated fallback to an unrelated sensor.
+      currentCapacityEntityId:
+        actualCurrentCapacityKwh !== null
+          ? this.config.current_capacity_entity
+          : undefined,
+      powerEntityId:
+        this.config.power_entity ||
+        (power > 0
+          ? this.config.charging_power_entity
+          : power < 0
+            ? this.config.discharging_power_entity
+            : undefined),
       minSoc,
       maxSoc,
       maxChargePower,
       maxDischargePower
     };
+  }
+
+  /**
+   * Opens Home Assistant's built-in entity details dialog.
+   */
+  private showMoreInfo(entityId: string): void {
+    if (!this.hass?.states[entityId]) {
+      return;
+    }
+
+    this.dispatchEvent(
+      new CustomEvent("hass-more-info", {
+        detail: { entityId },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 
   /**
