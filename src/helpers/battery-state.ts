@@ -87,6 +87,64 @@ export function getFlowSpeedLevel(
 }
 
 /**
+ * Adds a 1% deadband around each animation speed boundary.
+ *
+ * The previous level is stored per card instance, so multiple battery cards
+ * cannot influence each other's animation speeds.
+ */
+export function getFlowSpeedLevelWithHysteresis(
+  power: number,
+  state: BatteryState,
+  maxChargePower: number,
+  maxDischargePower: number,
+  previousLevel: number | null
+): number {
+  const currentLevel = getFlowSpeedLevel(
+    power,
+    state,
+    maxChargePower,
+    maxDischargePower
+  );
+
+  if (
+    state === "idle" ||
+    previousLevel === null ||
+    !Number.isInteger(previousLevel) ||
+    previousLevel < 1 ||
+    previousLevel > FLOW_SPEED_LEVELS
+  ) {
+    return currentLevel;
+  }
+
+  const maxPower =
+    state === "charging" ? maxChargePower : maxDischargePower;
+
+  if (!(maxPower > 0)) {
+    return currentLevel;
+  }
+
+  const powerRatio = Math.min(Math.abs(power) / maxPower, 1);
+  const hysteresis = 0.01;
+  let level = previousLevel;
+
+  while (
+    level < FLOW_SPEED_LEVELS &&
+    powerRatio > level / FLOW_SPEED_LEVELS + hysteresis
+  ) {
+    level++;
+  }
+
+  while (
+    level > 1 &&
+    powerRatio < (level - 1) / FLOW_SPEED_LEVELS - hysteresis
+  ) {
+    level--;
+  }
+
+  return level;
+}
+
+/**
  * Returns the animation duration for the current battery power.
  *
  * The current power is mapped to one of seven predefined speed levels.
@@ -95,9 +153,10 @@ export function getFlowDuration(
   power: number,
   state: BatteryState,
   maxChargePower: number,
-  maxDischargePower: number
+  maxDischargePower: number,
+  speedLevel?: number
 ): number {
-  const level = getFlowSpeedLevel(
+  const level = speedLevel ?? getFlowSpeedLevel(
     power,
     state,
     maxChargePower,
