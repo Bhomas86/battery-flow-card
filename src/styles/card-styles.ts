@@ -37,6 +37,22 @@ export const cardStyles = css`
     text-align: center;
   }
 
+  .battery-card-header__link {
+    color: inherit;
+    font: inherit;
+    text-decoration: none;
+  }
+
+  .battery-card-header__link:hover {
+    text-decoration: underline;
+  }
+
+  .battery-card-header__link:focus-visible {
+    outline: 2px solid var(--primary-color, #03a9f4);
+    outline-offset: 3px;
+    text-decoration: underline;
+  }
+
   .battery-summary {
     display: grid;
     grid-template-columns: var(--battery-width) minmax(0, 1fr);
