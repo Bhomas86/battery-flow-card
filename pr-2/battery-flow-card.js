@@ -1028,6 +1028,11 @@ function qe() {
 				selector: { text: {} }
 			},
 			{
+				name: "enable_entity_links",
+				default: !0,
+				selector: { boolean: {} }
+			},
+			{
 				name: "use_battery_sim_device",
 				default: !1,
 				selector: { boolean: {} }
@@ -1247,6 +1252,7 @@ function qe() {
 		computeLabel: (e) => {
 			switch (e.name) {
 				case "name": return "Battery name";
+				case "enable_entity_links": return "Enable entity and device links";
 				case "soc_entity": return "SOC entity";
 				case "current_capacity_entity": return "Current capacity entity";
 				case "capacity_kwh": return "Battery capacity";
@@ -1302,6 +1308,22 @@ var Je = o`
     font-weight: 700;
     line-height: 1.2;
     text-align: center;
+  }
+
+  .battery-card-header__link {
+    color: inherit;
+    font: inherit;
+    text-decoration: none;
+  }
+
+  .battery-card-header__link:hover {
+    text-decoration: underline;
+  }
+
+  .battery-card-header__link:focus-visible {
+    outline: 2px solid var(--primary-color, #03a9f4);
+    outline-offset: 3px;
+    text-decoration: underline;
   }
 
   .battery-summary {
