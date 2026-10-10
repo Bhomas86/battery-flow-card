@@ -1,0 +1,59 @@
+name: Publish Direct JS Test Download
+
+on:
+  push:
+    branches:
+      - feature/entity-more-info-tap
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Build and publish single JavaScript file
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout test branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate TypeScript
+        run: npm run check
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish only the built JS to test-builds branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_BRANCH: test-builds
+          TARGET_FILE: pr-2/battery-flow-card.js
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          content="$(base64 -w 0 dist/battery-flow-card.js)"
+          existing_sha="$(gh api "repos/$GITHUB_REPOSITORY/contents/$TARGET_FILE?ref=$TARGET_BRANCH" --jq '.sha' 2>/dev/null || true)"
+
+          jq -n \
+            --arg branch "$TARGET_BRANCH" \
+            --arg message "build: update PR 2 test file from ${GITHUB_SHA:0:7}" \
+            --arg content "$content" \
+            --arg sha "$existing_sha" \
+            '({branch: $branch, message: $message, content: $content} +
+              (if $sha == "" then {} else {sha: $sha} end))' > "$RUNNER_TEMP/publish.json"
+
+          gh api --method PUT \
+            "repos/$GITHUB_REPOSITORY/contents/$TARGET_FILE" \
+            --input "$RUNNER_TEMP/publish.json" > /dev/null
+
+          echo "Download: https://github.com/$GITHUB_REPOSITORY/blob/$TARGET_BRANCH/$TARGET_FILE"
