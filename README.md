@@ -290,7 +290,7 @@ If your system contains multiple battery modules, please also mention whether th
 
 You can find the entity information under **Developer Tools → States** or on the battery device page in Home Assistant.
 
-Please share your information as text or screenshots in our [Home Assistant Community discussion](https://community.home-assistant.io/t/battery-flow-card-lovelace-card-for-battery-storage-visualization/).
+Please share your information as text or screenshots in our [Home Assistant Community discussion](https://community.home-assistant.io/t/battery-flow-card-lovelace-card-for-battery-storage-visualization/) or submit it as a [GitHub Issue](https://github.com/Bhomas86/battery-flow-card/issues/new). If you would like to contribute an integration profile or implementation directly, you are also welcome to open a [Pull Request](https://github.com/Bhomas86/battery-flow-card/pulls).
 
 Please remove any personal information, IP addresses, or serial numbers before sharing.
 
@@ -625,7 +625,7 @@ Falls mehrere Batteriemodule vorhanden sind, wäre außerdem interessant, ob die
 
 Die benötigten Entitätsinformationen findest du in Home Assistant unter **Entwicklerwerkzeuge → Zustände** oder auf der jeweiligen Geräteseite.
 
-Teile die Informationen gerne als Text oder Screenshot in unserem [Home-Assistant-Community-Beitrag](https://community.home-assistant.io/t/battery-flow-card-lovelace-card-for-battery-storage-visualization/).
+Teile die Informationen gerne als Text oder Screenshot in unserem [Home-Assistant-Community-Beitrag](https://community.home-assistant.io/t/battery-flow-card-lovelace-card-for-battery-storage-visualization/) oder reiche sie als [GitHub Issue](https://github.com/Bhomas86/battery-flow-card/issues/new) ein. Wenn du direkt ein Integrationsprofil oder eine Implementierung beisteuern möchtest, kannst du auch einen [Pull Request](https://github.com/Bhomas86/battery-flow-card/pulls) erstellen.
 
 Bitte entferne vorher persönliche Daten, IP-Adressen und Seriennummern.
 
