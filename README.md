@@ -88,7 +88,7 @@ type: custom:battery-flow-card
 - Supports a single bidirectional power entity
 - Supports separate charging and discharging entities
 - Supports fixed or entity-based SOC and power limits
-- Automatic detection of devices from the Battery Simulator integration
+- Automatic detection for supported battery integrations (currently Battery Simulator)
 - Multilingual interface
 
 ## Languages
@@ -133,17 +133,25 @@ The card can be configured entirely through the graphical Home Assistant card ed
 
 Two configuration options are available:
 
-### Battery Simulator
+### Automatic detection
 
-The card supports devices from the following integration:
+Battery Flow Card supports automatic detection of battery storage systems through the Home Assistant device selector.
 
-[hif2k1/battery_sim](https://github.com/hif2k1/battery_sim)
+For supported integrations, users can select their battery device directly in the graphical card editor. The required entities and available SOC and power limits are then detected and assigned automatically.
 
-A Battery Simulator device can be selected directly in the graphical editor.
+**Currently supported integrations:**
 
-The required entities and available limits are then detected and applied automatically.
+| Battery system | Home Assistant integration |
+|---|---|
+| Battery Simulator | [hif2k1/battery_sim](https://github.com/hif2k1/battery_sim) |
 
-This means that devices from the Battery Simulator integration normally do not require manual assignment of individual battery entities.
+Support for additional battery systems is planned.
+
+**Is your battery system not listed yet?**
+
+You can help expand automatic detection by sharing information about your battery system and its Home Assistant integration.
+
+Find out what information is needed in [Help expand automatic detection](#help-expand-automatic-detection).
 
 ### Other batteries
 
@@ -226,6 +234,67 @@ type: custom:battery-flow-card
 use_battery_sim_device: true
 battery_sim_device: YOUR_DEVICE_ID
 ```
+
+## Help expand automatic detection
+
+The goal is to support automatic configuration for as many battery storage systems as possible through the Home Assistant device selector, without manually assigning individual entities.
+
+To achieve this, we need information about how different battery storage systems and their entities are represented in Home Assistant.
+
+If you use a battery from **Anker SOLIX, Zendure, Huawei, BYD, Fronius**, or another manufacturer, your contribution would be greatly appreciated.
+
+### What information do we need?
+
+**1. General information**
+
+- Battery manufacturer and model
+- Home Assistant integration (name and preferably a GitHub link)
+- Is the battery represented as a separate device in Home Assistant?
+- Are all entities assigned to the battery device, or are some assigned to the inverter?
+
+**2. Battery entities**
+
+Please share the entity names and entity IDs for as many of the following values as possible:
+
+| Value | Unit |
+|---|---|
+| State of Charge (SOC) | % |
+| Total battery capacity | kWh |
+| Current stored energy | kWh |
+| Current battery power | W |
+| Charging power (if separate) | W |
+| Discharging power (if separate) | W |
+| Minimum SOC | % |
+| Maximum SOC | % |
+| Maximum charging power | W |
+| Maximum discharging power | W |
+
+Depending on the manufacturer, model, and Home Assistant integration, not all listed values are provided as separate entities. For example, some systems do not expose the currently stored or usable energy in kWh, or the maximum charging and discharging power.
+
+Some of these values can be calculated from other available data. However, maximum charging and discharging power may depend on the specific system setup. For battery storage systems from **Anker SOLIX or Zendure**, for example, power limits may vary depending on the connection type, inverter, and system configuration.
+
+If possible, please also provide details about your **connection type and the actual charging and discharging power limits** of your system.
+
+**You don't need to provide every value. Even partial entity information is helpful for developing automatic battery detection.**
+
+**3. Additional information**
+
+The power sign convention is particularly important:
+
+- Does a positive value indicate charging or discharging?
+- Does a negative value indicate charging or discharging?
+
+If your system contains multiple battery modules, please also mention whether they appear as separate devices.
+
+### How can you help?
+
+You can find the entity information under **Developer Tools → States** or on the battery device page in Home Assistant.
+
+Please share your information as text or screenshots in our [Home Assistant Community discussion](https://community.home-assistant.io/t/battery-flow-card-lovelace-card-for-battery-storage-visualization/).
+
+Please remove any personal information, IP addresses, or serial numbers before sharing.
+
+**Thank you for helping improve Battery Flow Card!**
 
 ## Development
 
@@ -353,7 +422,7 @@ type: custom:battery-flow-card
 - Unterstützung einer einzelnen bidirektionalen Power-Entity
 - Unterstützung getrennter Lade- und Entlade-Entities
 - Unterstützung fester oder Entity-basierter SOC- und Leistungsgrenzen
-- Automatische Erkennung von Geräten der Battery-Simulator-Integration
+- Automatische Erkennung unterstützter Batteriesysteme (aktuell Battery Simulator)
 - Mehrsprachige Oberfläche
 
 ## Sprachen
@@ -398,17 +467,25 @@ Die Karte kann vollständig über den grafischen Home-Assistant-Karteneditor ein
 
 Dabei stehen zwei Möglichkeiten zur Verfügung:
 
-### Battery Simulator
+### Automatische Erkennung
 
-Die Karte unterstützt Geräte der Integration:
+Die Battery Flow Card unterstützt die automatische Erkennung von Batteriesystemen über die Home-Assistant-Geräteauswahl.
 
-[hif2k1/battery_sim](https://github.com/hif2k1/battery_sim)
+Bei unterstützten Integrationen kann das Batterie-Gerät direkt im grafischen Karteneditor ausgewählt werden. Die benötigten Entitäten sowie verfügbare SOC- und Leistungsgrenzen werden anschließend automatisch erkannt und übernommen.
 
-Im grafischen Editor kann ein Battery-Simulator-Gerät direkt ausgewählt werden.
+**Bereits unterstützte Integrationen:**
 
-Die benötigten Entities sowie die vorhandenen Grenzwerte werden anschließend automatisch erkannt und übernommen.
+| Batteriesystem | Home-Assistant-Integration |
+|---|---|
+| Battery Simulator | [hif2k1/battery_sim](https://github.com/hif2k1/battery_sim) |
 
-Dadurch ist für Geräte der Battery-Simulator-Integration normalerweise keine manuelle Zuordnung der einzelnen Batterie-Entities notwendig.
+Weitere Batteriesysteme sollen zukünftig ergänzt werden.
+
+**Dein Batteriesystem ist noch nicht aufgeführt?**
+
+Wenn du die Entwicklung unterstützen möchtest, kannst du dabei helfen, weitere Batteriesysteme in die automatische Erkennung aufzunehmen.
+
+Welche Informationen dafür benötigt werden, erfährst du unter [Hilfe bei der automatischen Erkennung](#hilfe-bei-der-automatischen-erkennung).
 
 ### Andere Batterien
 
@@ -492,6 +569,67 @@ type: custom:battery-flow-card
 use_battery_sim_device: true
 battery_sim_device: YOUR_DEVICE_ID
 ```
+
+## Hilfe bei der automatischen Erkennung
+
+Ziel ist es, zukünftig möglichst viele Batteriesysteme automatisch über die Home-Assistant-Geräteauswahl konfigurieren zu können – ohne dass die einzelnen Entitäten manuell zugeordnet werden müssen.
+
+Dafür benötigen wir Informationen darüber, wie unterschiedliche Batteriespeicher und deren Entitäten in Home Assistant aufgebaut sind.
+
+Wenn du beispielsweise ein Batteriesystem von **Anker SOLIX, Zendure, Huawei, BYD, Fronius** oder einem anderen Hersteller verwendest, freuen wir uns über deine Unterstützung.
+
+### Welche Informationen benötigen wir?
+
+**1. Allgemeine Informationen**
+
+- Hersteller und Modell des Batteriespeichers
+- Verwendete Home-Assistant-Integration (Name und möglichst GitHub-Link)
+- Ist der Batteriespeicher als eigenständiges Gerät in Home Assistant angelegt?
+- Sind alle Entitäten diesem Gerät zugeordnet oder teilweise dem Wechselrichter?
+
+**2. Entitäten des Batteriesystems**
+
+Bitte teile uns möglichst die Entitätsnamen und Entity-IDs der folgenden Werte mit:
+
+| Wert | Einheit |
+|---|---|
+| Ladezustand (SOC) | % |
+| Gesamtkapazität der Batterie | kWh |
+| Aktuell gespeicherte Energie | kWh |
+| Aktuelle Batterieleistung | W |
+| Ladeleistung (falls separat vorhanden) | W |
+| Entladeleistung (falls separat vorhanden) | W |
+| Minimaler SOC | % |
+| Maximaler SOC | % |
+| Maximale Ladeleistung | W |
+| Maximale Entladeleistung | W |
+
+Je nach Hersteller, Modell und verwendeter Home-Assistant-Integration werden nicht alle aufgeführten Werte als eigene Entitäten bereitgestellt. Beispielsweise fehlen bei manchen Systemen Angaben zur aktuell gespeicherten bzw. nutzbaren Energie in kWh oder zur maximalen Lade- und Entladeleistung.
+
+Einige dieser Werte lassen sich aus vorhandenen Daten berechnen. Insbesondere die maximalen Lade- und Entladeleistungen können jedoch vom Systemaufbau abhängen. Bei Batteriespeichern von **Anker SOLIX oder Zendure** können beispielsweise je nach Anschlussart, Wechselrichter und Konfiguration unterschiedliche Leistungsgrenzen gelten.
+
+Bitte gib daher, soweit bekannt, auch die **Anschlussart und die tatsächlichen Leistungsgrenzen** deines Systems an.
+
+**Nicht alle Angaben müssen vollständig sein. Auch teilweise vorhandene Entitätsinformationen helfen bei der Entwicklung der automatischen Erkennung.**
+
+**3. Zusätzliche Informationen**
+
+Besonders wichtig ist, welches Vorzeichen die Batterieleistung verwendet:
+
+- Positiver Wert = Laden oder Entladen?
+- Negativer Wert = Laden oder Entladen?
+
+Falls mehrere Batteriemodule vorhanden sind, wäre außerdem interessant, ob diese als separate Geräte dargestellt werden.
+
+### Wie kannst du helfen?
+
+Die benötigten Entitätsinformationen findest du in Home Assistant unter **Entwicklerwerkzeuge → Zustände** oder auf der jeweiligen Geräteseite.
+
+Teile die Informationen gerne als Text oder Screenshot in unserem [Home-Assistant-Community-Beitrag](https://community.home-assistant.io/t/battery-flow-card-lovelace-card-for-battery-storage-visualization/).
+
+Bitte entferne vorher persönliche Daten, IP-Adressen und Seriennummern.
+
+**Vielen Dank für deine Unterstützung bei der Weiterentwicklung der Battery Flow Card!**
 
 ## Entwicklung
 
