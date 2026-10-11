@@ -18,6 +18,11 @@ import { BatteryFlowCardConfig } from "./types/config";
 import { HomeAssistant } from "./types/home-assistant";
 
 import { getBatteryPower } from "./helpers/power-source";
+import {
+  BatteryState,
+  getBatteryState,
+  getFlowSpeedLevelWithHysteresis
+} from "./helpers/battery-state";
 import { getBatterySimData } from "./helpers/battery-sim-device";
 import {
   getEnergyEntityStateKwh,
@@ -46,6 +51,9 @@ export class BatteryFlowCard extends LitElement {
   @state()
   private config?: BatteryFlowCardConfig;
 
+  private previousFlowState: BatteryState = "idle";
+  private previousFlowSpeedLevel: number | null = null;
+
   /**
    * Applies the Lovelace card configuration.
    *
@@ -63,6 +71,9 @@ export class BatteryFlowCard extends LitElement {
       min_soc: config.min_soc ?? 0,
       max_soc: config.max_soc ?? 100
     };
+
+    this.previousFlowState = "idle";
+    this.previousFlowSpeedLevel = null;
   }
 
   /**
@@ -164,6 +175,23 @@ export class BatteryFlowCard extends LitElement {
       `;
     }
 
+    const flowState = getBatteryState(batteryData.power);
+    const previousLevel =
+      flowState === this.previousFlowState
+        ? this.previousFlowSpeedLevel
+        : null;
+    const flowSpeedLevel = getFlowSpeedLevelWithHysteresis(
+      batteryData.power,
+      flowState,
+      batteryData.maxChargePower,
+      batteryData.maxDischargePower,
+      previousLevel
+    );
+
+    this.previousFlowState = flowState;
+    this.previousFlowSpeedLevel =
+      flowState === "idle" ? null : flowSpeedLevel;
+
     return html`
       <div class="card">
         <div class="battery-card-header">
@@ -172,7 +200,7 @@ export class BatteryFlowCard extends LitElement {
 
         <div class="battery-summary">
           <div class="battery-summary__visual">
-            ${renderBatteryDisplay(batteryData)}
+            ${renderBatteryDisplay(batteryData, flowSpeedLevel)}
           </div>
 
           <div class="battery-summary__details">
