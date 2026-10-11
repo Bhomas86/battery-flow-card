@@ -13,7 +13,8 @@ import {
  */
 export function renderBatteryDetails(
   data: BatteryDisplayData,
-  language?: string
+  language?: string,
+  onOpenEntity?: (entityId: string) => void
 ): TemplateResult {
   const state = getBatteryState(data.power);
   const timeEstimation = estimateTimeToSocLimit(
@@ -34,7 +35,7 @@ export function renderBatteryDetails(
   return html`
     <div class="battery-details">
       <div class="battery-details__soc">
-        ${formatPercent(data.soc)}
+        ${renderEntityValue(formatPercent(data.soc), data.socEntityId, onOpenEntity)}
       </div>
 
       <div class="battery-details__row">
@@ -43,7 +44,11 @@ export function renderBatteryDetails(
         </span>
 
         <span class="battery-details__value">
-          ${formatEnergy(data.currentCapacityKwh)}
+          ${renderEntityValue(
+            formatEnergy(data.currentCapacityKwh),
+            data.currentCapacityEntityId,
+            onOpenEntity
+          )}
         </span>
       </div>
 
@@ -53,7 +58,11 @@ export function renderBatteryDetails(
         </span>
 
         <span class="battery-details__value">
-          ${formatPower(data.power)}
+          ${renderEntityValue(
+            formatPower(data.power),
+            data.powerEntityId,
+            onOpenEntity
+          )}
         </span>
       </div>
 
@@ -71,6 +80,31 @@ export function renderBatteryDetails(
         </span>
       </div>
     </div>
+  `;
+}
+
+/**
+ * Native button on values backed by a real entity; computed values stay text.
+ */
+function renderEntityValue(
+  value: string,
+  entityId?: string,
+  onOpenEntity?: (entityId: string) => void
+): TemplateResult {
+  if (!entityId || !onOpenEntity) {
+    return html`${value}`;
+  }
+
+  return html`
+    <button
+      type="button"
+      class="battery-details__entity-button"
+      title="${entityId}"
+      aria-label="${value} — ${entityId}"
+      @click=${() => onOpenEntity(entityId)}
+    >
+      ${value}
+    </button>
   `;
 }
 

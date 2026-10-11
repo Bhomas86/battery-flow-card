@@ -6,6 +6,9 @@ export interface BatteryFlowCardConfig {
 
   name?: string;
 
+  /** Enable more-info and simulator-device navigation links. */
+  enable_entity_links?: boolean;
+
   /**
    * Enables automatic entity discovery for Battery Simulator devices.
    */
