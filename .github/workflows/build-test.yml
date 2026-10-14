@@ -8,7 +8,7 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -39,3 +39,14 @@ jobs:
           path: dist/battery-flow-card.js
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish standalone JavaScript to test release
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/feature/card-picker-animated-preview-v020'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="test-card-picker"
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "Card picker test build" --notes "Automated test build; not a stable release." --prerelease
+          fi
+          gh release upload "$TAG" dist/battery-flow-card.js --clobber
