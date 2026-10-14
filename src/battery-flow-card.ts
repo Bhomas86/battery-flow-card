@@ -146,6 +146,7 @@ export class BatteryFlowCard extends LitElement {
       !usesBatterySimDevice &&
       (!hasSocEntity || !hasPowerEntity)
     ) {
+      if (this.isCardPickerPreview()) return this.renderPickerPreview();
       return html`
         <div class="card card--setup">
           <div class="battery-card-header">
@@ -239,6 +240,41 @@ export class BatteryFlowCard extends LitElement {
    * Reads the configured Home Assistant entities and converts their
    * states into the internal battery data model.
    */
+
+  private isCardPickerPreview(): boolean {
+    let node: Node | null = this;
+    while (node) {
+      const root = node.getRootNode();
+      if (!(root instanceof ShadowRoot)) break;
+      const host = root.host;
+      const tag = host.localName;
+      if (tag.includes("editor") || tag === "hui-dialog-edit-card") return false;
+      if (tag === "hui-card-picker" || tag === "hui-card-preview") return true;
+      node = host;
+    }
+    return false;
+  }
+
+  private renderPickerPreview() {
+    const demo: BatteryDisplayData = {
+      name: "Battery", soc: 65, power: 1800,
+      capacityKwh: 7, currentCapacityKwh: 4.55,
+      minSoc: 10, maxSoc: 90,
+      maxChargePower: 3500, maxDischargePower: 3500
+    };
+    const language = this.hass?.language ?? "en";
+    return html`
+      <div class="card">
+        <div class="battery-card-header">${demo.name}</div>
+        <div class="battery-summary">
+          <div class="battery-summary__visual">${renderBatteryDisplay(demo)}</div>
+          <div class="battery-summary__details">${renderBatteryDetails(demo, language)}</div>
+        </div>
+        ${renderPowerBar(demo, language)}
+      </div>
+    `;
+  }
+
   private getBatteryData(): BatteryDisplayData | null {
     if (!this.hass || !this.config) {
       return null;
