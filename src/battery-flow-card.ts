@@ -244,9 +244,9 @@ export class BatteryFlowCard extends LitElement {
   private isCardPickerPreview(): boolean {
     let node: Node | null = this;
     while (node) {
-      const root = node.getRootNode();
+      const root: Node = node.getRootNode();
       if (!(root instanceof ShadowRoot)) break;
-      const host = root.host;
+      const host: Element = root.host;
       const tag = host.localName;
       if (tag.includes("editor") || tag === "hui-dialog-edit-card") return false;
       if (tag === "hui-card-picker" || tag === "hui-card-preview") return true;
