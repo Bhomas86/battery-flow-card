@@ -1,6 +1,6 @@
 {
   "name": "battery-flow-card",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "Darstellung einer Batterie in Home Assistant",
   "main": "index.js",
   "scripts": {

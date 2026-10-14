@@ -231,6 +231,15 @@ export function getBatterySimData(
 
     soc,
     power,
+    socEntityId: socEntity.entity_id,
+    currentCapacityEntityId: mainBatteryEntity.entity_id,
+    // Simulator power is split into two separate sensors.
+    powerEntityId:
+      chargingPower > 0
+        ? chargingPowerEntity.entity_id
+        : dischargingPower > 0
+          ? dischargingPowerEntity.entity_id
+          : undefined,
 
     capacityKwh,
     currentCapacityKwh,

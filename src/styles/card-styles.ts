@@ -37,6 +37,22 @@ export const cardStyles = css`
     text-align: center;
   }
 
+  .battery-card-header__link {
+    color: inherit;
+    font: inherit;
+    text-decoration: none;
+  }
+
+  .battery-card-header__link:hover {
+    text-decoration: underline;
+  }
+
+  .battery-card-header__link:focus-visible {
+    outline: 2px solid var(--primary-color, #03a9f4);
+    outline-offset: 3px;
+    text-decoration: underline;
+  }
+
   .battery-summary {
     display: grid;
     grid-template-columns: var(--battery-width) minmax(0, 1fr);
@@ -194,6 +210,31 @@ export const cardStyles = css`
     font-size: clamp(38px, 10cqw, 60px);
     font-weight: 700;
     line-height: 1;
+  }
+
+  .battery-details__entity-button {
+    appearance: none;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 2px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    text-align: inherit;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .battery-details__entity-button:hover {
+    text-decoration: underline;
+  }
+
+  .battery-details__entity-button:focus-visible {
+    outline: 2px solid var(--primary-color, #03a9f4);
+    outline-offset: 3px;
   }
 
   .battery-details__row {
