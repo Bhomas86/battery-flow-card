@@ -74,9 +74,17 @@ type: custom:battery-flow-card
 
 ## Preview
 
-| Charging · 3.00 kW | Idle · 0 W | Discharging · 230 W |
-|:---:|:---:|:---:|
-| ![Charging preview](images/preview-charging-en.svg) | ![Idle preview](images/preview-idle-en.svg) | ![Discharging preview](images/preview-discharging-en.svg) |
+### Charging · 3.00 kW
+
+<img src="images/preview-charging-en.svg" alt="Charging animation at 3.00 kW" width="640" />
+
+### Idle · 0 W
+
+<img src="images/preview-idle-en.svg" alt="Idle battery preview" width="640" />
+
+### Discharging · 230 W
+
+<img src="images/preview-discharging-en.svg" alt="Discharging animation at 230 W" width="640" />
 
 ## Features
 
@@ -413,9 +421,17 @@ type: custom:battery-flow-card
 
 ## Vorschau
 
-| Laden · 3,00 kW | Leerlauf · 0 W | Entladen · 230 W |
-|:---:|:---:|:---:|
-| ![Ladevorschau](images/preview-charging-de.svg) | ![Leerlaufvorschau](images/preview-idle-de.svg) | ![Entladevorschau](images/preview-discharging-de.svg) |
+### Laden · 3,00 kW
+
+<img src="images/preview-charging-de.svg" alt="Ladeanimation bei 3,00 kW" width="640" />
+
+### Leerlauf · 0 W
+
+<img src="images/preview-idle-de.svg" alt="Batterievorschau im Leerlauf" width="640" />
+
+### Entladen · 230 W
+
+<img src="images/preview-discharging-de.svg" alt="Entladeanimation bei 230 W" width="640" />
 
 ## Funktionen
 
