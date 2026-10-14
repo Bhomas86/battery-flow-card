@@ -74,6 +74,8 @@ type: custom:battery-flow-card
 
 ## Preview
 
+![Animated Battery Flow Card charging preview](images/battery-flow-animated.svg)
+
 ![Battery Flow Card Example](/images/Battery-Flow-Card.jpg)
 
 ## Features
@@ -410,6 +412,8 @@ type: custom:battery-flow-card
 ```
 
 ## Vorschau
+
+![Animierte Battery Flow Card beim Laden](images/battery-flow-animated.svg)
 
 ![Battery Flow Card Beispiel](/images/Battery-Flow-Card.jpg)
 
