@@ -1,0 +1,52 @@
+name: Build Test JavaScript
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "feature/**"
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npm run check
+
+      - name: Build JavaScript
+        run: npm run build
+
+      - name: Upload test JavaScript
+        uses: actions/upload-artifact@v4
+        with:
+          name: battery-flow-card-test
+          path: dist/battery-flow-card.js
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish standalone JavaScript to test release
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/feature/card-picker-animated-preview-v020'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="test-card-picker"
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "Card picker test build" --notes "Automated test build; not a stable release." --prerelease
+          fi
+          gh release upload "$TAG" dist/battery-flow-card.js --clobber
