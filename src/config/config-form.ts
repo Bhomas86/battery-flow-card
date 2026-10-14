@@ -12,6 +12,14 @@ export function getBatteryFlowCardConfigForm() {
       },
 
       {
+        name: "enable_entity_links",
+        default: true,
+        selector: {
+          boolean: {}
+        }
+      },
+
+      {
         name: "use_battery_sim_device",
         default: false,
         selector: {
@@ -293,6 +301,8 @@ export function getBatteryFlowCardConfigForm() {
       switch (schema.name) {
         case "name":
           return "Battery name";
+        case "enable_entity_links":
+          return "Enable entity and device links";
         case "soc_entity":
           return "SOC entity";
         case "current_capacity_entity":

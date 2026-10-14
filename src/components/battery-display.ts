@@ -53,7 +53,8 @@ function createBatteryFillPath(
  */
 
 export function renderBatteryDisplay(
-  data: BatteryDisplayData
+  data: BatteryDisplayData,
+  flowSpeedLevel?: number
 ): TemplateResult {
   const soc = Math.min(Math.max(data.soc, 0), 100);
   const power = data.power;
@@ -201,7 +202,8 @@ export function renderBatteryDisplay(
                     innerX,
                     fillY,
                     innerWidth,
-                    fillHeight
+                    fillHeight,
+                    flowSpeedLevel
                   )
                 : null
             }
@@ -226,7 +228,8 @@ function renderFlowAnimation(
   x: number,
   y: number,
   width: number,
-  height: number
+  height: number,
+  flowSpeedLevel?: number
 ): TemplateResult {
   if (height <= 0 || state === "idle") {
     return html``;
@@ -237,7 +240,8 @@ function renderFlowAnimation(
     power,
     state,
     maxChargePower,
-    maxDischargePower
+    maxDischargePower,
+    flowSpeedLevel
   );
   const delay = -(duration / 2);
 

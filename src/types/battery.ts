@@ -9,6 +9,11 @@ export interface BatteryDisplayData {
   capacityKwh: number;
   currentCapacityKwh: number;
 
+  /** Entity IDs for opening Home Assistant more-info dialogs. */
+  socEntityId?: string;
+  currentCapacityEntityId?: string;
+  powerEntityId?: string;
+
   minSoc: number;
   maxSoc: number;
 

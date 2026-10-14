@@ -89,6 +89,9 @@ type: custom:battery-flow-card
 - Supports separate charging and discharging entities
 - Supports fixed or entity-based SOC and power limits
 - Automatic detection for supported battery integrations (currently Battery Simulator)
+- Tap SOC, stored energy and battery power values to open Home Assistant entity details
+- Open the Battery Simulator device page by tapping the card title
+- Enable or disable entity and device links in the graphical card editor
 - Multilingual interface
 
 ## Languages
@@ -423,6 +426,9 @@ type: custom:battery-flow-card
 - Unterstützung getrennter Lade- und Entlade-Entities
 - Unterstützung fester oder Entity-basierter SOC- und Leistungsgrenzen
 - Automatische Erkennung unterstützter Batteriesysteme (aktuell Battery Simulator)
+- SOC, gespeicherte Energie und Batterieleistung antippen, um Entitätsdetails zu öffnen
+- Geräteseite des Battery Simulators durch Antippen der Kartenüberschrift öffnen
+- Entitäts- und Gerätelinks im grafischen Karteneditor aktivieren oder deaktivieren
 - Mehrsprachige Oberfläche
 
 ## Sprachen

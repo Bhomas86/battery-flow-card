@@ -18,6 +18,11 @@ import { BatteryFlowCardConfig } from "./types/config";
 import { HomeAssistant } from "./types/home-assistant";
 
 import { getBatteryPower } from "./helpers/power-source";
+import {
+  BatteryState,
+  getBatteryState,
+  getFlowSpeedLevelWithHysteresis
+} from "./helpers/battery-state";
 import { getBatterySimData } from "./helpers/battery-sim-device";
 import {
   getEnergyEntityStateKwh,
@@ -46,6 +51,9 @@ export class BatteryFlowCard extends LitElement {
   @state()
   private config?: BatteryFlowCardConfig;
 
+  private previousFlowState: BatteryState = "idle";
+  private previousFlowSpeedLevel: number | null = null;
+
   /**
    * Applies the Lovelace card configuration.
    *
@@ -59,10 +67,14 @@ export class BatteryFlowCard extends LitElement {
 
     this.config = {
       ...config,
+      enable_entity_links: config.enable_entity_links ?? true,
       capacity_kwh: config.capacity_kwh ?? 7,
       min_soc: config.min_soc ?? 0,
       max_soc: config.max_soc ?? 100
     };
+
+    this.previousFlowState = "idle";
+    this.previousFlowSpeedLevel = null;
   }
 
   /**
@@ -78,6 +90,7 @@ export class BatteryFlowCard extends LitElement {
   public static getStubConfig(): Record<string, unknown> {
     return {
       name: "Battery",
+      enable_entity_links: true,
       use_battery_sim_device: false,
       battery_sim_device: "",
 
@@ -164,19 +177,56 @@ export class BatteryFlowCard extends LitElement {
       `;
     }
 
+    const flowState = getBatteryState(batteryData.power);
+    const previousLevel =
+      flowState === this.previousFlowState
+        ? this.previousFlowSpeedLevel
+        : null;
+
+    const flowSpeedLevel = getFlowSpeedLevelWithHysteresis(
+      batteryData.power,
+      flowState,
+      batteryData.maxChargePower,
+      batteryData.maxDischargePower,
+      previousLevel
+    );
+
+    this.previousFlowState = flowState;
+    this.previousFlowSpeedLevel =
+      flowState === "idle" ? null : flowSpeedLevel;
+
+    const linksEnabled = this.config.enable_entity_links !== false;
+    const simulatorDeviceId = usesBatterySimDevice
+      ? this.config.battery_sim_device
+      : undefined;
+    const hasDeviceLink =
+      linksEnabled &&
+      simulatorDeviceId &&
+      Boolean(this.hass.devices[simulatorDeviceId]);
+
     return html`
       <div class="card">
         <div class="battery-card-header">
-          ${batteryData.name}
+          ${hasDeviceLink && simulatorDeviceId
+            ? html`<a
+                class="battery-card-header__link"
+                href="/config/devices/device/${encodeURIComponent(simulatorDeviceId)}"
+                title="Open Battery Simulator device"
+              >${batteryData.name}</a>`
+            : batteryData.name}
         </div>
 
         <div class="battery-summary">
           <div class="battery-summary__visual">
-            ${renderBatteryDisplay(batteryData)}
+            ${renderBatteryDisplay(batteryData, flowSpeedLevel)}
           </div>
 
           <div class="battery-summary__details">
-            ${renderBatteryDetails(batteryData, this.hass.language)}
+            ${renderBatteryDetails(
+              batteryData,
+              this.hass.language,
+              linksEnabled ? (entityId) => this.showMoreInfo(entityId) : undefined
+            )}
           </div>
         </div>
 
@@ -229,13 +279,15 @@ export class BatteryFlowCard extends LitElement {
     const calculatedCurrentCapacityKwh =
       this.config.capacity_kwh * (soc / 100);
 
+    const actualCurrentCapacityKwh = this.config.current_capacity_entity
+      ? getEnergyEntityStateKwh(
+          this.hass,
+          this.config.current_capacity_entity
+        )
+      : null;
+
     const currentCapacityKwh =
-      this.config.current_capacity_entity
-        ? getEnergyEntityStateKwh(
-            this.hass,
-            this.config.current_capacity_entity
-          ) ?? calculatedCurrentCapacityKwh
-        : calculatedCurrentCapacityKwh;
+      actualCurrentCapacityKwh ?? calculatedCurrentCapacityKwh;
 
     const minSoc = this.getConfiguredNumericValue(
       this.config.min_soc_entity,
@@ -271,11 +323,41 @@ export class BatteryFlowCard extends LitElement {
       power,
       capacityKwh: this.config.capacity_kwh,
       currentCapacityKwh,
+      socEntityId: this.config.soc_entity,
+      // Do not link a calculated fallback to an unrelated sensor.
+      currentCapacityEntityId:
+        actualCurrentCapacityKwh !== null
+          ? this.config.current_capacity_entity
+          : undefined,
+      powerEntityId:
+        this.config.power_entity ||
+        (power > 0
+          ? this.config.charging_power_entity
+          : power < 0
+            ? this.config.discharging_power_entity
+            : undefined),
       minSoc,
       maxSoc,
       maxChargePower,
       maxDischargePower
     };
+  }
+
+  /**
+   * Opens Home Assistant's built-in entity details dialog.
+   */
+  private showMoreInfo(entityId: string): void {
+    if (!this.hass?.states[entityId]) {
+      return;
+    }
+
+    this.dispatchEvent(
+      new CustomEvent("hass-more-info", {
+        detail: { entityId },
+        bubbles: true,
+        composed: true
+      })
+    );
   }
 
   /**
