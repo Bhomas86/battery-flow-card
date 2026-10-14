@@ -1,3 +1,5 @@
+<img src="images/icon.svg" alt="Battery Flow Card icon" width="96" align="right" />
+
 # Battery Flow Card
 
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Custom%20Card-41BDF5?logo=home-assistant)
