@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="380" viewBox="0 0 640 380" role="img" aria-label="Battery Flow Card charging animation demo, 65 percent, 1.80 kilowatts">
+<style>
+  .txt{font-family:Arial,Helvetica,sans-serif;fill:#424242}
+  .small{font-size:17px}.value{font-size:18px;font-weight:600}
+  .flow{animation:rise 3.2s linear infinite}
+  .flow2{animation-delay:-1.6s}
+  @keyframes rise{from{transform:translateY(0)}to{transform:translateY(-143.65px)}}
+  @media(prefers-reduced-motion:reduce){.flow{animation:none}}
+</style>
+<defs>
+ <clipPath id="inner"><rect x="47" y="70" width="116" height="221" rx="10"/></clipPath>
+ <clipPath id="filled"><path d="M47 291 L47 157.35 Q47 147.35 57 147.35 L153 147.35 Q163 147.35 163 157.35 L163 291 Z"/></clipPath>
+ <linearGradient id="flow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="white" stop-opacity="0"/><stop offset=".35" stop-color="white" stop-opacity=".12"/><stop offset=".5" stop-color="white" stop-opacity=".28"/><stop offset=".65" stop-color="white" stop-opacity=".12"/><stop offset="1" stop-color="white" stop-opacity="0"/></linearGradient>
+</defs>
+<rect x="4" y="4" width="632" height="372" rx="12" fill="#fff" stroke="#dedede"/>
+<text x="320" y="38" class="txt" font-size="25" text-anchor="middle">Battery</text>
+<path d="M83 65 L83 53 Q83 47 89 47 L121 47 Q127 47 127 53 L127 65 Z" fill="#424242"/>
+<rect x="40" y="63" width="130" height="235" rx="18" fill="none" stroke="#424242" stroke-width="6"/>
+<rect x="47" y="70" width="116" height="221" rx="10" fill="#000" fill-opacity=".08"/>
+<g clip-path="url(#inner)">
+<path d="M47 291 L47 157.35 Q47 147.35 57 147.35 L153 147.35 Q163 147.35 163 157.35 L163 291 Z" fill="#4caf50"/>
+<line x1="51" x2="159" y1="268.9" y2="268.9" stroke="#c20707" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="155" y="264" text-anchor="end" font-size="11" fill="#c20707">10%</text>
+<line x1="51" x2="159" y1="92.1" y2="92.1" stroke="#0f325e" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="155" y="88" text-anchor="end" font-size="11" fill="#0f325e">90%</text>
+<g clip-path="url(#filled)">
+<rect class="flow" x="47" y="282" width="116" height="18" rx="9" fill="url(#flow)"/>
+<rect class="flow flow2" x="47" y="282" width="116" height="18" rx="9" fill="url(#flow)"/>
+</g>
+</g>
+<text x="215" y="111" class="txt" font-size="48" font-weight="600">65%</text>
+<text x="215" y="157" class="txt small">Current capacity</text><text x="600" y="157" text-anchor="end" class="txt value">4.55 kWh</text>
+<text x="215" y="203" class="txt small">Charging</text><text x="600" y="203" text-anchor="end" class="txt value">1.80 kW</text>
+<text x="215" y="249" class="txt small">Estimated time to 90%</text><text x="600" y="249" text-anchor="end" class="txt value">58 min</text>
+<text x="24" y="326" class="txt" font-size="14">Max. discharge: 3.5 kW</text>
+<text x="616" y="326" text-anchor="end" class="txt" font-size="14">Max. charge: 3.5 kW</text>
+<rect x="24" y="341" width="592" height="15" rx="5" fill="#e5e5e5"/>
+<rect x="320" y="341" width="152.2" height="15" rx="0" fill="#4caf50"/>
+<rect x="318" y="338" width="4" height="21" fill="#424242"/>
+</svg>
