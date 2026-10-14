@@ -74,9 +74,9 @@ type: custom:battery-flow-card
 
 ## Preview
 
-![Animated Battery Flow Card charging preview](images/battery-flow-animated.svg)
-
-![Battery Flow Card Example](/images/Battery-Flow-Card.jpg)
+| Charging · 3.00 kW | Idle · 0 W | Discharging · 230 W |
+|:---:|:---:|:---:|
+| ![Charging preview](images/preview-charging-en.svg) | ![Idle preview](images/preview-idle-en.svg) | ![Discharging preview](images/preview-discharging-en.svg) |
 
 ## Features
 
@@ -413,9 +413,9 @@ type: custom:battery-flow-card
 
 ## Vorschau
 
-![Animierte Battery Flow Card beim Laden](images/battery-flow-animated.svg)
-
-![Battery Flow Card Beispiel](/images/Battery-Flow-Card.jpg)
+| Laden · 3,00 kW | Leerlauf · 0 W | Entladen · 230 W |
+|:---:|:---:|:---:|
+| ![Ladevorschau](images/preview-charging-de.svg) | ![Leerlaufvorschau](images/preview-idle-de.svg) | ![Entladevorschau](images/preview-discharging-de.svg) |
 
 ## Funktionen
 
