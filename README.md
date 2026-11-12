@@ -9,6 +9,7 @@
 ![GitHub Release](https://img.shields.io/github/v/release/Bhomas86/battery-flow-card)
 ![GitHub Stars](https://img.shields.io/github/stars/Bhomas86/battery-flow-card)
 ![GitHub Issues](https://img.shields.io/github/issues/Bhomas86/battery-flow-card)
+[![Sponsor Bhomas86](https://img.shields.io/badge/Sponsor-Bhomas86-EA4AAA?logo=githubsponsors)](https://github.com/sponsors/Bhomas86)
 
 A custom Lovelace card for Home Assistant that provides a clear overview of
 battery storage systems, charging and discharging power, and SOC limits.
@@ -340,7 +341,7 @@ This project is licensed under the MIT License.
 
 ## Support
 
-If you like this project and would like to support further development, you can support the project through GitHub.
+If you like this project and would like to support further development, you can [sponsor it on GitHub](https://github.com/sponsors/Bhomas86).
 
 ---
 
@@ -355,6 +356,7 @@ If you like this project and would like to support further development, you can 
 ![GitHub Release](https://img.shields.io/github/v/release/Bhomas86/battery-flow-card)
 ![GitHub Stars](https://img.shields.io/github/stars/Bhomas86/battery-flow-card)
 ![GitHub Issues](https://img.shields.io/github/issues/Bhomas86/battery-flow-card)
+[![Sponsor Bhomas86](https://img.shields.io/badge/Sponsor-Bhomas86-EA4AAA?logo=githubsponsors)](https://github.com/sponsors/Bhomas86)
 
 Eine Custom Lovelace Card für Home Assistant zur übersichtlichen Darstellung
 von Batteriespeichern, Lade- und Entladeleistung sowie SOC-Grenzen.
@@ -688,4 +690,4 @@ Dieses Projekt steht unter der MIT-Lizenz.
 
 ## Unterstützung
 
-Wenn dir das Projekt gefällt und du die weitere Entwicklung unterstützen möchtest, kannst du das Projekt über GitHub unterstützen.
+Wenn dir das Projekt gefällt und du die weitere Entwicklung unterstützen möchtest, kannst du [das Projekt über GitHub Sponsors unterstützen](https://github.com/sponsors/Bhomas86).
